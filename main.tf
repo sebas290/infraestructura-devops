@@ -85,7 +85,7 @@ resource "aws_security_group" "web_sg" {
 # EC2 Key Pair con clave llamada "labuser"
 resource "aws_key_pair" "deployer" {
   key_name   = "labuser"
-  public_key = file("~/.ssh/labuser.pub")
+   public_key = file("/home/ec2-user/.ssh/labuser.pub")
 }
 
 # EC2 Jump Server
