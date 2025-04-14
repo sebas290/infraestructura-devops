@@ -82,18 +82,13 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-# EC2 Key Pair con clave llamada "labuser"
-resource "aws_key_pair" "deployer" {
-  key_name   = "labuser"
-   public_key = file("${path.module}/labuser.pub")
-}
 
 # EC2 Jump Server
 resource "aws_instance" "jump_server" {
   ami                         = "ami-00a929b66ed6e0de6"
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_subnet.id
-  key_name                    = aws_key_pair.deployer.key_name
+  key_name                    = "labuser"
   vpc_security_group_ids      = [aws_security_group.jump_sg.id]
   associate_public_ip_address = true
   tags = { Name = "JumpServer" }
@@ -105,7 +100,7 @@ resource "aws_instance" "web_servers" {
   ami                         = "ami-00a929b66ed6e0de6"
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_subnet.id
-  key_name                    = aws_key_pair.deployer.key_name
+  key_name                    = "labuser"
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   associate_public_ip_address = true
   tags = { Name = "WebServer-${count.index + 1}" }
