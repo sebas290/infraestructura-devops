@@ -82,15 +82,15 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-# EC2 Key Pair con clave llamada "vockey"
+# EC2 Key Pair con clave llamada "labuser"
 resource "aws_key_pair" "deployer" {
-  key_name   = "vockey"
-  public_key = file("~/.ssh/vockey.pub")
+  key_name   = "labuser"
+  public_key = file("~/.ssh/labuser.pub")
 }
 
 # EC2 Jump Server
 resource "aws_instance" "jump_server" {
-  ami                         = "ami-084568db4383264d4" # Amazon Linux 2
+  ami                         = "ami-00a929b66ed6e0de6"
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_subnet.id
   key_name                    = aws_key_pair.deployer.key_name
@@ -102,7 +102,7 @@ resource "aws_instance" "jump_server" {
 # EC2 Web Servers (3 instancias)
 resource "aws_instance" "web_servers" {
   count                       = 3
-  ami                         = "ami-084568db4383264d4"
+  ami                         = "ami-00a929b66ed6e0de6"
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_subnet.id
   key_name                    = aws_key_pair.deployer.key_name
